@@ -1,0 +1,42 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import accuracy_score
+iris = load_iris()
+iris
+df = pd.DataFrame(data=iris.data, columns=iris.feature_names)
+df
+df.head()
+df.tail()
+df.shape
+df.columns
+df.isnull().sum()
+df['species'] = iris.target
+X = df.drop('species', axis=1)
+X
+y = df['species']
+y
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+print(X.shape,X_train.shape,X_test.shape)
+knn = KNeighborsClassifier(n_neighbors=5)
+knn
+knn.fit(X_train, y_train)
+y_pred = knn.predict(X_test)
+y_pred
+accuracy = accuracy_score(y_test, y_pred)
+print("Accuracy:", accuracy)
+sns.pairplot(df,hue='species', markers='o', palette='Set1')
+plt.suptitle('Pairwise Scatter Plot of Iris Dataset', y=1.02)
+plt.show()
+plt.figure(figsize=(10, 6))
+sns.boxplot(x='species', y='sepal length (cm)', data=df)
+plt.title('Box Plot - Sepal Length for Each Species')
+plt.show()
+plt.figure(figsize=(10, 6))
+sns.violinplot(x='species', y='petal width (cm)', data=df)
+plt.title('Violin Plot - Petal Width for Each Species')
+plt.show()
